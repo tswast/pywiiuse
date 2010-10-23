@@ -1,0 +1,38 @@
+To install my code you should be able to use
+
+python setup.py install
+
+on windows or 
+
+sudo python setup.py install
+
+on Ubuntu.
+
+I had to use a trick to get the system to find wiiuse.so on the path
+on Gutsy. Download and build wiiuse. Then
+
+sudo cp wiiuse.so /usr/local/lib/libwiiuse.so.1.0
+cd /usr/local/lib
+sudo ln -s libwiiuse.so.1.0 libwiiuse.so.1
+sudo ln -s libwiiuse.so.1 libwiiuse.so
+sudo ldconfig
+
+On Windows putting wiiuse.dll anywhere on your path should work. 
+
+On Windows you have to "join" your wiimote to the system before you
+can use it. I don't know why this is necessary and it sure is a
+bother. I seem to have to do it every time I boot Windows.
+Here is how I do it. 
+
+1. Open the Control Panel "Bluetooth" applet.
+2. Click Add
+3. Check the box that says My device is up and ready to be found.
+4. Press and hold buttons 1&2 on the wiimote. Hold them till the process is entirely finished.
+5. Click Next
+6. The flashlight icon will appear as it searches for the device.
+7. Nitendo RVL-CNT-01 (or something like that will appear), click on that and hit next.
+8. It will say adding device or some such.
+9. Click finish.
+
+
+
