@@ -6,7 +6,7 @@ def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(name='wiiuse',
-    version='0.12',
+    version='0.13',
     author='Tim Swast',
     author_email='tswast@gmail.com',
 

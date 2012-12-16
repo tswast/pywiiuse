@@ -1,4 +1,24 @@
-pywiiuse for wiiuse v0.12
 
-Ctypes wrapper for wiiuse.
+PyWiiuse
+========
+
+This project is a Python wrapper for the Wiiuse Wii remote library. This has been updated to keep up with the semi-official port at https://github.com/rpavlik/wiiuse and http://www.vrac.iastate.edu/vancegroup/docs/wiiuse/
+
+
+It uses ctypes, so it should work with the official CPython or PyPy.
+
+
+Change log
+----------
+
+2012-07-01 : Updated to work with semi-official port wiiuse v0.13 (Thanks Juan Alvarez!)
+2010-10-22 : pywiiuse for wiiuse v0.12
+
+
+Contributers
+------------
+
+* Tim Swast <purplemonkeyking (at) gmail (dot) com>
+* Juan Alvarez
+* Gary Bishop <gb@cs.unc.edu> (Original author)
 
