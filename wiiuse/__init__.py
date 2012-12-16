@@ -131,16 +131,23 @@ class wiimote_state(Structure):
                 ('exp_rjs_ang', c_float),
                 ('exp_ljs_mag', c_float),
                 ('exp_rjs_mag', c_float),
-                ('exp_btns', c_ushort),
+                ('exp_btns', c_uint16), #c_ushort changed
                 ('exp_orient', orient),
                 ('exp_accel', vec3b),
                 ('exp_r_shoulder', c_float),
                 ('exp_l_shoulder', c_float),
+				('drx', c_ushort),#added
+				('dry', c_ushort),#added
+				('drz', c_ushort),#added
+				('exp_wb_rtr', c_uint16),#added
+				('exp_wb_rtl', c_uint16),#added
+				('exp_wb_rbr', c_uint16),#added
+				('exp_wb_rbl', c_uint16),#added
                 ('ir_ax', c_int),
                 ('ir_ay', c_int),
                 ('ir_distance', c_float),
                 ('orient', orient),
-                ('btns', c_ushort),
+                ('btns', c_uint16),#c_ushort changed
                 ('accel', vec3b),
                 ]
 
@@ -148,6 +155,9 @@ if os.name == 'nt':
     JunkSkip = [('dev_handle', c_void_p),
                 ('hid_overlap', c_void_p*5), # skipping over this data structure
                 ('stack', c_int),
+                ('timeout',c_int),#added
+				('normal_timeout',c_byte),#added
+				('exp_timeout',c_byte)#added
                 ]
 else:
     JunkSkip = [('bdaddr', c_void_p),
