@@ -359,7 +359,7 @@ def init(nwiimotes):
     '''Initialize the module'''
     # find the dll
     if os.name == 'nt':
-        dll = ctypes.cdll.wiiuse
+        dll = ctypes.cdll.LoadLibrary(os.path.join(os.path.dirname(__file__), "libwiiuse.dll"))
     elif sys.platform == 'darwin':
         dll = ctypes.cdll.LoadLibrary('libwiiuse.dylib')
     else:
