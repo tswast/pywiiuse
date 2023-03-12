@@ -137,7 +137,7 @@ class motion_plus(Structure):
                 ('acc_mode', c_byte),
                 ('raw_gyro_threshold', c_int),
                 ('nunchuk', POINTER(nunchuk)),
-                ('classic_ctrl', POINTER(classic_ctrl))
+                ('classic_ctrl', POINTER(classic_ctrl)),
                 ]
 class wii_board(Structure):
     _fields_ = [('tl', c_float),
@@ -152,7 +152,8 @@ class wii_board(Structure):
                 ('ctr', c_ushort*3),
                 ('cbl', c_ushort*3),
                 ('cbr', c_ushort*3),
-                ('update_calib', c_uint8)
+                ('update_calib', c_uint8),
+                ('use_alternate_report', c_uint8),
                 ]
 class expansion_union(Union):
     _fields_ = [('nunchuk', nunchuk),
@@ -391,6 +392,7 @@ def init(nwiimotes):
     set_aspect_ratio = dll.wiiuse_set_aspect_ratio
     set_orient_threshold = dll.wiiuse_set_orient_threshold
     set_flags = dll.wiiuse_set_flags
+    calibrate_motion_plus = dll.wiiuse_calibrate_motion_plus
     
     # finally initialize wiiuse
     dll.wiiuse_init.restype = wiimote_pp
