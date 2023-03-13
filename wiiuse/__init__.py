@@ -392,7 +392,6 @@ def init(nwiimotes):
     set_aspect_ratio = dll.wiiuse_set_aspect_ratio
     set_orient_threshold = dll.wiiuse_set_orient_threshold
     set_flags = dll.wiiuse_set_flags
-    calibrate_motion_plus = dll.wiiuse_calibrate_motion_plus
     
     # finally initialize wiiuse
     dll.wiiuse_init.restype = wiimote_pp
