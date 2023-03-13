@@ -74,10 +74,12 @@ if os.name != 'nt': print('Press 1&2')
 
 wiimotes = wiiuse.init(nmotes)
 
+print("finding")
 found = wiiuse.find(wiimotes, nmotes, 5)
 if not found:
     print('not found')
     sys.exit(1)
+print("found", found)
 
 connected = wiiuse.connect(wiimotes, nmotes)
 if connected:
@@ -87,7 +89,7 @@ else:
     sys.exit(1)
 
 for i in range(nmotes):
-    wiiuse.set_leds(wiimotes[i], wiiuse.LED[i])
+    wiiuse.set_leds(wiimotes[i], wiiuse.LED[i]|wiiuse.LED[3])
     wiiuse.status(wiimotes[0])
     wiiuse.set_ir(wiimotes[0], 1)
     wiiuse.set_ir_vres(wiimotes[i], 1000, 1000)
@@ -95,6 +97,8 @@ for i in range(nmotes):
 try:
     rum = 1
     while True:
+        if wiimotes[0][0].event == wiiuse.DISCONNECT or wiimotes[0][0].event == wiiuse.UNEXPECTED_DISCONNECT:
+            print("wiimote 0 disconnected")
         r = wiiuse.poll(wiimotes, nmotes)
         if r != 0:
             handle_event(wiimotes[0])
