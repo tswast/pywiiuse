@@ -137,7 +137,7 @@ class motion_plus(Structure):
                 ('acc_mode', c_byte),
                 ('raw_gyro_threshold', c_int),
                 ('nunchuk', POINTER(nunchuk)),
-                ('classic_ctrl', POINTER(classic_ctrl))
+                ('classic_ctrl', POINTER(classic_ctrl)),
                 ]
 class wii_board(Structure):
     _fields_ = [('tl', c_float),
@@ -152,7 +152,8 @@ class wii_board(Structure):
                 ('ctr', c_ushort*3),
                 ('cbl', c_ushort*3),
                 ('cbr', c_ushort*3),
-                ('update_calib', c_uint8)
+                ('update_calib', c_uint8),
+                ('use_alternate_report', c_uint8),
                 ]
 class expansion_union(Union):
     _fields_ = [('nunchuk', nunchuk),
@@ -258,7 +259,7 @@ class api(Structure):
                 ('read_data', c_void_p),
                 ('write_data', c_void_p),
                 ('status', CFUNCTYPE(None, wiimote_p)),
-                ('get_by_id', c_void_p),
+                ('get_by_id', CFUNCTYPE(wiimote_p, wiimote_pp, c_int, c_int)),
                 ('set_flags', CFUNCTYPE(c_int, wiimote_p, c_int, c_int)),
                 ('set_smooth_alpha', CFUNCTYPE(c_float, wiimote_p, c_float)),
                 ('set_ir', CFUNCTYPE(None, wiimote_p, c_int)),
@@ -271,6 +272,7 @@ class api(Structure):
                 ('connect', CFUNCTYPE(c_int, wiimote_pp, c_int)),
                 ('disconnect', CFUNCTYPE(None, wiimote_p)),
                 ('poll', CFUNCTYPE(None, wiimote_pp, c_int)),
+                ('set_timeout', CFUNCTYPE(None, wiimote_pp, c_int, c_char, c_char)),
                 ]
 
 def is_pressed(dev, button):
@@ -353,13 +355,34 @@ set_ir_position = None
 set_aspect_ratio = None
 set_orient_threshold = None
 set_flags = None
+get_by_id = None
+set_timeout = None
+
+NONE = 0
+EVENT = 1
+STATUS = 2
+CONNECT = 3
+DISCONNECT = 4
+UNEXPECTED_DISCONNECT = 5
+READ_DATA = 6
+WRITE_DATA = 7
+NUNCHUK_INSERTED = 8
+NUNCHUK_REMOVED = 9
+CLASSIC_CTRL_INSERTED = 10
+CLASSIC_CTRL_REMOVED = 11
+GUITAR_HERO_3_CTRL_INSERTED = 12
+GUITAR_HERO_3_CTRL_REMOVED = 13
+WII_BOARD_CTRL_INSERTED = 14
+WII_BOARD_CTRL_REMOVED = 15
+MOTION_PLUS_ACTIVATED = 16
+MOTION_PLUS_REMOVED = 17
 
 # wrap the init function so the user doesn't have to fool with ctypes for the callbacks
 def init(nwiimotes):
     '''Initialize the module'''
     # find the dll
     if os.name == 'nt':
-        dll = ctypes.cdll.wiiuse
+        dll = ctypes.cdll.LoadLibrary(os.path.join(os.path.dirname(__file__), "libwiiuse.dll"))
     elif sys.platform == 'darwin':
         dll = ctypes.cdll.LoadLibrary('libwiiuse.dylib')
     else:
@@ -375,7 +398,7 @@ def init(nwiimotes):
     # initialize our other function pointers
     global find, connect, set_leds, rumble, status, poll, disconnect, motion_sensing
     global set_ir, toggle_rumble, set_ir_vres, set_ir_position, set_aspect_ratio
-    global set_orient_threshold, set_flags
+    global set_orient_threshold, set_flags, get_by_id, set_timeout
     find = dll.wiiuse_find
     connect = dll.wiiuse_connect
     set_leds = dll.wiiuse_set_leds
@@ -391,6 +414,8 @@ def init(nwiimotes):
     set_aspect_ratio = dll.wiiuse_set_aspect_ratio
     set_orient_threshold = dll.wiiuse_set_orient_threshold
     set_flags = dll.wiiuse_set_flags
+    get_by_id = dll.wiiuse_get_by_id
+    set_timeout = dll.wiiuse_set_timeout
     
     # finally initialize wiiuse
     dll.wiiuse_init.restype = wiimote_pp

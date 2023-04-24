@@ -17,5 +17,7 @@ setup(name='wiiuse',
     keywords = "wii",
     url='http://code.google.com/p/pywiiuse/',
     packages=['wiiuse'],
+    package_data={'': ['libwiiuse.dll','libwiiuse.dylib','libwiiuse.so']},
+    include_package_data=True
 )
 
