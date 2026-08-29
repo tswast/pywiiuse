@@ -95,6 +95,8 @@ class joystick(Structure):
                 ('center', vec2b),
                 ('ang', c_float),
                 ('mag', c_float),
+                ('x', c_float),
+                ('y', c_float),
                 ]
 
 class nunchuk(Structure):
