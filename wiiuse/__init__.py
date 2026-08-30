@@ -206,8 +206,8 @@ if os.name == 'nt':
 elif sys.platform == 'darwin':
     JunkSkip = [('objc_wm', c_void_p)]
 else:
-    JunkSkip = [('bdaddr', c_void_p),
-                ('bdaddr_str', c_char*18),
+    JunkSkip = [('bdaddr_str', c_char*18),
+                ('bdaddr', c_void_p),
                 ('out_sock', c_int),
                 ('in_sock', c_int),
                 ]
@@ -267,6 +267,7 @@ class api(Structure):
                 ('set_ir', CFUNCTYPE(None, wiimote_p, c_int)),
                 ('set_ir_vres', CFUNCTYPE(None, wiimote_p, c_uint, c_uint)),
                 ('set_ir_position', CFUNCTYPE(None, wiimote_p, c_int)),
+                ('set_ir_sensitivity', CFUNCTYPE(None, wiimote_p, c_uint)),
                 ('set_aspect_ratio', CFUNCTYPE(None, wiimote_p, c_int)),
                 ('set_bluetooth_stack', c_void_p),
                 ('set_orient_threshold', CFUNCTYPE(None, wiimote_p, c_float)),
@@ -354,6 +355,7 @@ set_ir = None
 toggle_rumble = None
 set_ir_vres = None
 set_ir_position = None
+set_ir_sensitivity = None
 set_aspect_ratio = None
 set_orient_threshold = None
 set_flags = None
@@ -399,7 +401,7 @@ def init(nwiimotes):
 
     # initialize our other function pointers
     global find, connect, set_leds, rumble, status, poll, disconnect, motion_sensing
-    global set_ir, toggle_rumble, set_ir_vres, set_ir_position, set_aspect_ratio
+    global set_ir, toggle_rumble, set_ir_vres, set_ir_position, set_ir_sensitivity, set_aspect_ratio
     global set_orient_threshold, set_flags, get_by_id, set_timeout
     find = dll.wiiuse_find
     connect = dll.wiiuse_connect
@@ -413,6 +415,7 @@ def init(nwiimotes):
     toggle_rumble = dll.wiiuse_toggle_rumble
     set_ir_vres = dll.wiiuse_set_ir_vres
     set_ir_position = dll.wiiuse_set_ir_position
+    set_ir_sensitivity = dll.wiiuse_set_ir_sensitivity
     set_aspect_ratio = dll.wiiuse_set_aspect_ratio
     set_orient_threshold = dll.wiiuse_set_orient_threshold
     set_flags = dll.wiiuse_set_flags
