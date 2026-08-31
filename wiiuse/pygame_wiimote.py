@@ -17,7 +17,10 @@ Gary Bishop January 2008
 
 import pygame
 from threading import Thread
-from Queue import Queue, Empty
+try:
+    from queue import Queue, Empty
+except ImportError:
+    from Queue import Queue, Empty
 import time
 
 # events to use. Is there a way to get ones known to be unused?
@@ -33,7 +36,7 @@ NUNCHUK_JOY = base + 8
 WIIMOTE_STATUS = base + 9
 WIIMOTE_DISCONNECT = base + 10
 
-wiiuse = None # import within the thread, why do I have to do this?
+import wiiuse
 
 class wiimote_thread(Thread):
     '''Manage the wiiuse interface'''
@@ -43,16 +46,12 @@ class wiimote_thread(Thread):
         self.startup = Queue()
         self.nmotes = nmotes
         self.timeout = timeout
-        self.setDaemon(1)
+        self.daemon = True
         self.start()
         self.startup.get(True) # wait for the thread to get started and acquire the motes
 
     def run(self):
         '''This runs in a separate thread'''
-        # import here to avoid thread problems on windows
-        global wiiuse
-        import wiiuse
-        
         self.wiimotes = wiiuse.init(self.nmotes)
         found = wiiuse.find(self.wiimotes, self.nmotes, self.timeout)
         self.actual_nmotes = wiiuse.connect(self.wiimotes, self.nmotes)
