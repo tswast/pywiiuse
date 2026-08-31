@@ -197,7 +197,7 @@ class wiimote_state(Structure):
 
 if os.name == 'nt':
     JunkSkip = [('dev_handle', c_void_p),
-                ('hid_overlap', c_void_p*5), # skipping over this data structure
+                ('hid_overlap', c_void_p*4), # skipping over this data structure
                 ('stack', c_int),
                 ('timeout',c_int),#added
 				('normal_timeout',c_byte),#added
