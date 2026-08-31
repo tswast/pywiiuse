@@ -214,7 +214,7 @@ class wiimote(object):
                 enable |= wiiuse.ORIENT_THRESH
             else:
                 disable |= wiiuse.ORIENT_THRESH
-        print enable, disable
+        print(enable, disable)
         WT.do(wiiuse.set_flags, self.wm, enable, disable)
 
     def set_orient_thresh(self, thresh):

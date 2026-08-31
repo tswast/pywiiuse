@@ -8,6 +8,8 @@ This project is a Python wrapper for the Wiiuse Wii remote library. This has bee
 It uses ctypes, so it should work with the official CPython or PyPy.
 
 
+On Windows, drop libwiiuse.dll into the wiiuse directory. A 64-bit build is in the releases here: https://github.com/arpruss/wiiuse
+
 Change log
 ----------
 
