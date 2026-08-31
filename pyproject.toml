@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wiiuse"
+version = "0.13"
+description = "Python wrapper for the wiiuse interface to the Wiimote"
+readme = "README"
+requires-python = ">=3.8"
+license = {text = "GPL-3.0"}
+authors = [
+    {name = "Tim Swast", email = "tswast@gmail.com"}
+]
+keywords = ["wii", "wiimote", "wiiuse"]
+dependencies = []
+
+[project.optional-dependencies]
+pygame = [
+    "pygame>=2.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/tswast/pywiiuse"
+
+[dependency-groups]
+dev = [
+    "wiiuse[pygame]",
+    "pytest>=8.0.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.setuptools.package-data]
+wiiuse = ["libwiiuse.dll", "libwiiuse.dylib", "libwiiuse.so"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
