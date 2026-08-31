@@ -196,8 +196,17 @@ class wiimote_state(Structure):
                 ]
 
 if os.name == 'nt':
+    # quick and dirty placeholder for OVERLAPPED, not fully
+    # implementing the union, but just to get the size right
+    class overlapped_placeholder(Structure):
+        _fields_ = [('Internal', c_void_p),
+                    ('InternalHigh', c_void_p),
+                    ('Offset', c_uint),
+                    ('OffsetHigh', c_uint),
+                    ('hEvent', c_void_p)]
+                    
     JunkSkip = [('dev_handle', c_void_p),
-                ('hid_overlap', c_void_p*5), # skipping over this data structure
+                ('hid_overlap', overlapped_placeholder), # skipping over this data structure
                 ('stack', c_int),
                 ('timeout',c_int),#added
 				('normal_timeout',c_byte),#added
