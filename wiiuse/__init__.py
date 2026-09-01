@@ -284,9 +284,10 @@ class api(Structure):
                 ('connect', CFUNCTYPE(c_int, wiimote_pp, c_int)),
                 ('disconnect', CFUNCTYPE(None, wiimote_p)),
                 ('poll', CFUNCTYPE(None, wiimote_pp, c_int)),
+                ('read_data', CFUNCTYPE(None, wiimote_p, c_void_p, c_byte, c_uint, c_ushort)),
                 ('set_timeout', CFUNCTYPE(None, wiimote_pp, c_int, c_char, c_char)),
                 ]
-
+ 
 def is_pressed(dev, button):
     return dev.btns & button
 
@@ -370,6 +371,7 @@ set_orient_threshold = None
 set_flags = None
 get_by_id = None
 set_timeout = None
+read_data = None
 
 NONE = 0
 EVENT = 1
@@ -411,7 +413,7 @@ def init(nwiimotes):
     # initialize our other function pointers
     global find, connect, set_leds, rumble, status, poll, disconnect, motion_sensing
     global set_ir, toggle_rumble, set_ir_vres, set_ir_position, set_ir_sensitivity, set_aspect_ratio
-    global set_orient_threshold, set_flags, get_by_id, set_timeout
+    global set_orient_threshold, set_flags, get_by_id, set_timeout, read_data
     find = dll.wiiuse_find
     connect = dll.wiiuse_connect
     set_leds = dll.wiiuse_set_leds
@@ -430,6 +432,7 @@ def init(nwiimotes):
     set_flags = dll.wiiuse_set_flags
     get_by_id = dll.wiiuse_get_by_id
     set_timeout = dll.wiiuse_set_timeout
+    read_data = dll.wiiuse_read_data
     
     # finally initialize wiiuse
     dll.wiiuse_init.restype = wiimote_pp
